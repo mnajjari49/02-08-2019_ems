@@ -1,0 +1,292 @@
+<odoo>
+  <data>
+
+        <record model="ir.ui.view" id="one_year_diploma_timetable">
+      <field name="name">class timetable inherited</field>
+      <field name="model">student.classes</field>
+      <field name="arch" type="xml">
+       <tree>
+
+          <field name="name" string="Course"/>
+          <field name="course_level"/>
+          <field name="campuses"/>
+          <field name="classes"/>
+
+
+        </tree>
+    </field>
+  
+    </record>
+
+
+
+    <record model="ir.ui.view" id="classes_timetable_for_students">
+      <field name="name">Class Timetable For Student</field>
+      <field name="model">student.classes</field>
+      <field name="arch" type="xml">
+      <form>
+        <header>
+          <button name="confirmed_class" string="Confirm" type='object' states='draft'/>
+          <field name="state" widget="statusbar" status_visible="draft, confirm " readonly="1"/>
+        </header>
+        <sheet>
+          <group>
+            <group >
+            <field name="name" string="Select Your Program " widget="selection" attrs="{'readonly':[('state','=','confirm')]}"/>
+            
+              <field name="course_level" widget="selection" domain="[('standard_id','=',name)]" attrs="{'invisible':[('name','=',False)],'readonly':[('state','=','confirm')]}"/>
+              <field name="campuses" widget="selection" attrs="{'readonly':[('state','=','confirm')]}"/>
+             
+            <!--   <field name="test" invisible="1"/> -->
+            </group>
+            <group>
+              
+               <field name="classes"  widget="selection" domain="[('standard_id','=',name),('semester_id','=',course_level),('school_id','=',campuses),('state','=','running')]" attrs="{'readonly':[('state','=','confirm')]}"/>
+               <field name="start_date" attrs="{'readonly':[('state','=','confirm')]}"/>
+               <field name="end_date" attrs="{'readonly':[('state','=','confirm')]}"/>
+               <field name="status" invisible="1"/>
+               <field name="s_no" invisible="1"/>
+            </group>
+          </group>
+          <separator string="Class Timetable"/>
+                   <field name="classes_id" context="{'default_course_level': course_level,'default_classes':classes,'default_campuses':campuses,'default_name':name,'default_start_date':start_date,'default_end_date':end_date,'default_status':status,'default_serial_no':s_no}">
+                        <tree string="Class Timetable Information" editable="bottom">
+                          <field name="timetable_id" invisible="1"/>
+                          <field name="serial_no"/>
+                          <field name="substistute_date"/>
+                          <field name="teacher" domain="[('school_id','=',parent.campuses)]" widget="selection" />
+                            <field name="subject" domain="[('program_id','=',parent.name),('semester_id','=',course_level)]" widget="selection"/>
+                            <field name="teacher_start_time" widget="timepicker2"/>
+                            <field name="teacher_end_time" widget="timepicker2"/>
+                            <field name="substistute" widget="selection" domain="[('school_id','=',parent.campuses)]"/>
+
+
+                            <field name="course_level" invisible="1"/>
+                            <field name="classes" invisible="1"/>
+                            <field name="campuses" invisible="1"/>
+                            <field name="name" invisible="1"/>
+                            <field name="start_date" invisible="1"/>
+                            <field name="end_date" invisible="1"/>
+                            <field name="status" invisible="1"/>
+                  
+                        </tree>
+                    </field>
+        
+        
+            
+              
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+
+    <record id="student_time_table_tree_view" model='ir.ui.view'>
+      <field name="name">Student Tree View Time Table</field>
+      <field name="model">student.regular.timetable</field>
+      <field name="arch" type="xml">
+        <tree create="false" edit="false" delete='false'>
+          <field name="teacher"/>
+          <field name="name" string="Program"/>
+          <field name="substistute_date"/>
+          <field name="course_level"/>
+          <field name="subject"/>
+          <field name="teacher_start_time"/>
+          <field name="teacher_end_time"/>
+          <field name="classes"/>
+          <field name="start_date"/>
+          <field name="end_date"/>
+          <field name="substistute"/>
+          <field name="status"/>
+        
+          
+                  
+        </tree>
+      </field>
+    </record>
+     <record id="view_student_payslip_search" model="ir.ui.view">
+            <field name="name">Student Reguar Timetable</field>
+            <field name="model">student.regular.timetable</field>
+            <field name="arch" type="xml">
+                <search string="Timetable">
+                    <group col="10" colspan="4">
+                        
+                        <separator orientation="vertical"/>
+                        <field name="teacher" />
+                        <field name="start_date"/>
+                    
+                    </group>
+                    <newline/>
+                    <group expand="0" string="Group By..." colspan="12" col="10">
+                        <filter string="Student" icon="terp-personal" name="teacher" context="{'group_by':'teacher'}"/>
+                        <separator orientation="vertical"/>
+                        <filter string="Start Date" icon="terp-folder-yellow" name="start_date" context="{'group_by':'start_date'}"/>
+                        
+                    </group>
+                </search>
+            </field>
+        </record>
+
+          <record id="action_student_timetable" model="ir.actions.act_window">
+                  <field name="name">Student Class Timetable</field>
+                  <field name="res_model">student.classes</field>
+                  <field name="view_mode">tree,form</field>
+        
+          </record>
+
+        <record id="invoice_inherited_for_student" model="ir.ui.view">
+          <field name="name">Invoice Inherited For Student</field>
+          <field name="model">account.invoice</field>
+          <field name="inherit_id" ref="account.invoice_form"/>
+          <field name="arch" type="xml">
+            <field name="date_invoice" position="replace">
+              <field name="date_of_invoice"/>
+            </field>
+          </field>
+        </record>
+
+
+
+    <menuitem 
+      id="menu_school_standard_form3333" 
+      name="Classes Timetable"
+      parent="school.menu_configuration"/>
+
+    <menuitem
+    id="timetable_view"
+    name="Class Timetale" 
+    parent="menu_school_standard_form3333"  
+    sequence="1" 
+    action="action_student_timetable"/>
+
+
+
+
+  </data>
+</odoo>
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+    <!-- <record model="ir.ui.view" id="one_year_diploma_timetable">
+      <field name="name">class timetable inherited</field>
+      <field name="model">student.classes</field>
+      <field name="arch" type="xml">
+       <tree>
+
+          <field name="name" string="Course"/>
+
+        </tree>
+    </field>
+  
+    </record> -->
+<!-- 
+
+     <record model="ir.ui.view" id="classes_timetable_for_students">
+      <field name="name">Class Timetable For Student</field>
+      <field name="model">student.classes</field>
+      <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="name" string="Select Your Course" widget="selection"/>
+            <field name="classes"  widget="selection"/>
+              <field name="course_level" widget="selection" domain="[('standard_id','=',name)]"/>
+              <field name="test" invisible="1"/>
+
+          </group>
+          <group>
+            
+              <group  string="First Period" attrs="{'invisible':[('test','=',1)]}">
+                  <field name="first_period_teacher" />
+                  <field name="first_period_subject" />
+                  <field name="first_period_start_time" widget="odoo_timepicker" />
+                  <field name="first_period_end_time" widget="odoo_timepicker"/>
+              </group>
+
+              <group string="Second Period"  >
+                  <field name="second_period_teacher"/>
+                  <field name="second_period_subject"/>
+                  <field name="second_period_start_time" widget="odoo_timepicker" />
+                  <field name="second_period_end_time" widget="odoo_timepicker"/>
+              </group>
+
+
+              <group string="Third Period">
+                  <field name="third_period_teacher"/>
+                  <field name="third_period_subject"/>
+                  <field name="third_period_start_time" widget="odoo_timepicker"/>
+                  <field name="third_period_end_time" widget="odoo_timepicker" />
+              </group>
+
+
+
+              <group string="Fourth Period"  >
+                <field name="fourth_period_teacher"/>
+                <field name="fourth_period_subject"/>
+                <field name="fourth_period_start_time" widget="odoo_timepicker"/>
+                <field name="fourth_period_end_time" widget="odoo_timepicker"/>
+              </group>
+
+              <group string="Fifth Period">
+                  <field name="fifth_period_teacher"/>
+                  <field name="fifth_period_subject"/>
+                  <field name="fifth_period_start_time" widget="odoo_timepicker" />
+                  <field name="fifth_period_end_time" widget="odoo_timepicker" />
+              </group>
+
+              <group string="sixth Period">
+                  <field name="six_period_teacher"/>
+                  <field name="six_period_subject"/>
+                  <field name="six_period_start_time" widget="odoo_timepicker"/>
+                  <field name="six_period_end_time" widget="odoo_timepicker" />
+              </group>
+              <group string="Seven Period">
+                  <field name="seven_period_teacher"/>
+                  <field name="seven_period_subject"/>
+                  <field name="seven_period_start_time" widget="odoo_timepicker" />
+                  <field name="seven_period_end_time" widget="odoo_timepicker" />
+       
+              </group>
+
+
+
+
+
+
+
+       
+        </group>
+        </sheet>
+      </form>
+
+          
+       
+    </field>
+  
+    </record>
+
+
+
+    <record id="action_student_timetable" model="ir.actions.act_window">
+        <field name="name">Student Class Timetable</field>
+        <field name="res_model">student.classes</field>
+        <field name="view_mode">tree,form</field>
+        
+    </record> -->
+
+
+
+    
+  

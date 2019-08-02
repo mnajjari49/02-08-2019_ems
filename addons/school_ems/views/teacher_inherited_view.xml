@@ -1,0 +1,247 @@
+<odoo>
+	<data>
+
+
+		<record id="teacher_subjects_view_form" model="ir.ui.view">
+			<field name="name">teacher Subjects Views</field>
+			<field name="model">school.teacher</field>
+			<field name="inherit_id" ref="school.main_view_school_teacher_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//form/sheet/div/button[2]" position="after">
+
+					<button name="teacher_class_timetable" type="object"
+							class="oe_stat_button" icon="fa-pencil-square-o" >
+						<field string="Class Timetable" name="counting" widget="statinfo"/>
+					</button>
+
+					<button name="teacher_class_timetable1" type='object' class="oe_stat_button" icon="fa-pencil-square-o"  >
+						<field name="extra_class" widget="statinfo"/>
+					</button>
+
+					<button name="teacher_class_timetable2" type='object' class="oe_stat_button" icon="fa-pencil-square-o">
+						<field name="history" widget="statinfo"/>
+					</button>
+				</xpath>
+
+			<field name="standard_id" position="replace">
+				<field name="update_subjects" readonly="0"/>
+			</field>
+
+			</field>
+		</record>
+
+
+		<record id="student_warning_form1111" model="ir.ui.view">
+			<field name="name">Student Warning Form</field>
+			<field name="model">student.warning</field>
+			<field name="inherit_id"  ref="school.view_student_warning_form"/>
+			<field name="arch" type="xml">
+					<field name="student_id" position="before">
+					<field name="program" widget="selection"/>
+					<field name="course_level" widget="selection" domain="[('standard_id','=',program)]"/>
+					<field name="campus" widget="selection"/>
+
+
+			</field>
+
+			</field>
+		</record>
+
+
+		<!-- <record id="teacher_leave_request_tree" model="ir.ui.view">
+			<field name="name">Teacher Leave Request Tree</field>
+			<field name="model">teacher.leaves</field>
+			<field name="arch" type="xml">
+				<tree>
+					<field name="teacher_id"/>
+					<field name="campus"/>
+					<field name="department"/>
+					<field name="designation"/>
+					<field name="leave_type"/>
+					<field name="leave_days"/>
+				</tree>
+			</field>
+		</record>
+		<record id="teacher_leave_request_form" model="ir.ui.view">
+		<field name="name">Teacher Leave Request Form</field>
+			<field name="model">teacher.leaves</field>
+			<field name="arch" type="xml">
+				<form>
+					<header>
+						<button name="confirmation" type="object" string="Confirm" states='draft' class="oe_highlight"/>
+						<button name="approved" type="object" string='Approve' states="confirm" class="oe_highlight"/>
+						<button name="rejected" type="Reject" string="Reject" states='confirm' class="oe_highlight"/>
+						<field name="state" widget="statusbar" status_visible="draft, confirm,approve,reject" readonly="1"/>
+					</header>
+					<sheet>
+						<group>
+							<group>
+								<field name="teacher_id" widget="selection" attrs="{'readonly':[('state','=','confirm')]}"/>
+								<field name="campus" attrs="{'readonly':[('state','=','confirm')]}"/>
+								<field name="department" attrs="{'readonly':[('state','=','confirm')]}"/>
+								<field name="designation" attrs="{'readonly':[('state','=','confirm')]}"/>
+							</group>
+							<group>
+								<field name="leave_type" attrs="{'readonly':[('state','=','confirm')]}"/>
+								<label string="Duration"/>
+                         
+                                <div >
+                                    <field name="date_from"  class="oe_inline" attrs="{'readonly':[('state','=','confirm')]}"/>-
+                  
+                                    <field name="date_to"   class="oe_inline" attrs="{'readonly':[('state','=','confirm')]}"/>
+                                </div>
+
+								<field name="leave_days" attrs="{'readonly':[('state','=','confirm')]}"/>
+							</group>
+							<group>
+								<field name="substistute_teacher" domain="[('school_id','=',campus)]" attrs="{'readonly':[('state','=','approve')]}" widget="selection"/>
+							
+							
+							<field name="remarks" string="Comment by Manager"  attrs="{'readonly':[('state','=','approve')],'required':[('state','=','confirm')]}"/>
+							</group>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record> -->
+
+
+		<!-- <record id="teacher_leave_request_action" model="ir.actions.act_window">
+			<field name="name">Teacher Leave Request Action</field>
+			<field name="res_model">teacher.leaves</field>
+			<field name="view_mode">tree,form</field>
+
+		</record> -->
+
+
+
+		<record id="student_subject_inherited1111" model="ir.ui.view">
+			<field name="name">student Subject Inherited</field>
+			<field name="model">subject.subject</field>
+			<field name="inherit_id" ref="school.view_subject_subject_form"/>
+			<field name="arch" type="xml">
+				
+
+			<field name="name" position="replace">
+				<field name="program"  widget="selection"/>
+			</field>
+			<field name="standard_id" position="replace">
+				<field name="course_level" domain="[('standard_id','=',program)]" widget="selection"/>
+			</field>
+
+			</field>
+		</record>
+
+
+
+		<record id="student_class_changes" model="ir.ui.view">
+			<field name="name">Student Class Changes</field>
+			<field name="model">school.standard</field>
+			<field name="inherit_id"  ref="school.view_school_standard_form"/>
+			<field name="arch" type="xml">
+			<xpath expr="//form/header" position="inside">
+				<button name="send_class_status_new" string="Change" type="object"/>
+			</xpath>
+		</field>
+		</record>
+
+		<record id="teacher_class_changes" model="ir.ui.view">
+			<field name="name">School Teacher Changes</field>
+			<field name="model">school.teacher</field>
+			<field name="inherit_id"  ref="school.main_view_school_teacher_form"/>
+			<field name="arch" type="xml">
+			<xpath expr="//form/sheet/div/button[2]" position="attributes">
+				<attribute name="invisible">1</attribute>
+			</xpath>
+		</field>
+		</record>
+
+		<!--  <record id="view_time_table_inherited" model="ir.ui.view">
+            <field name="name">Time Table Inherited</field>
+            <field name="model">time.table</field>
+            <field name="inherit_id" ref="timetable.view_time_table_form"/>
+            <field name="arch" type="xml">
+
+          <xpath expr="//form/sheet/notebook/page/field/tree" position="inside">
+          	<field name="teacher_id" invisible="1"/>
+          </xpath>
+            </field>
+        </record> -->
+
+
+        <record id="student_subjects-tree" model="ir.ui.view">
+        	<field name="name">Student Subject Tree</field>
+        	<field name="model">student.subjects</field>
+        	<field name="arch" type="xml">
+        		<tree>
+        			<field name="name"/>
+        			<field name="semester_id"/>
+        		</tree>
+        	</field>
+        </record>
+
+
+        <record id="student_subjects-form" model="ir.ui.view">
+        	<field name="name">Student Subject Form</field>
+        	<field name="model">student.subjects</field>
+        	<field name="arch" type="xml">
+        		<form>
+        			<sheet>
+        				<group>
+        					<group>
+
+        							<field name="program_id" widget="selection"/>
+        							<field name="semester_id" widget="selection" domain="[('standard_id','=',program_id)]"/>
+        							<field name="campus_id" widget="campus_id"/>
+
+        					</group>
+        					<group>
+        						<field name="name"/>
+        						<field name="sub_code"/>
+        					</group>
+        				</group>
+        			</sheet>
+        		</form>
+        		
+        	</field>
+        </record>
+
+
+     <record id="student_subjects_action" model="ir.actions.act_window">
+        	<field name="name">Student Subject Action</field>
+        	<field name="res_model">student.subjects</field>
+        	<field name="view_mode">tree,form</field> 
+        		
+        	
+        </record>
+
+         <record id="view_student_student_form2" model="ir.ui.view">
+            <field name="name">student.student.form</field>
+            <field name="model">student.student</field>
+            <field name="inherit_id" ref="school.view_student_student_form_1"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//div[@name='buttons']" position="inside">
+                        <button name="student_results" class="oe_inline oe_stat_button" type="object" icon="fa-trophy" string="Result">
+                        </button>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+
+
+  <menuitem id="student_subject_menuitem" name="Class Subjects" parent="school.menu_subject_subject_form" action="student_subjects_action" sequence="6" />
+
+
+
+
+
+
+
+
+
+		<menuitem id="menu_teacher_leave_request" name="Teacher Leave Request" parent="school.menu_teachers" action="hr_holidays.open_ask_holidays" sequence="5" groups="school.group_school_administration,school.group_school_teacher"/>
+
+	</data>
+</odoo>

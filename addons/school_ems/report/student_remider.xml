@@ -1,0 +1,44 @@
+<odoo>
+	<data>
+
+
+        <record model="ir.cron" id="student_fee_reminder">
+            <field name="name">Student Fee Reminder</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'student.payslip'"/>
+            <field name="function" eval="'send_student_fee_reminder'"/>
+            <field name="args" eval="'()'" />
+        </record>
+
+
+
+         <record id="student_reminder_fee" model="mail.template">
+            <field name="name">Approved</field>
+            <field name="model_id" ref="school_fees.model_student_payslip"></field>
+            <field name="email_from">${}</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="subject">Remainder</field>
+            <field name="auto_delete" eval="False"/>
+            <field name="built_in" eval="True"/>
+            <field name="body_html"><![CDATA[
+                <p>Dear Student</p>
+                <p>Accepted your resignation.</p>
+                <p></p>
+                <p></p>
+                <p> All The Best</p>
+                <hr/>
+            
+                
+                
+            ]]>
+            </field>
+        </record>
+
+
+		
+	</data>
+
+</odoo>
